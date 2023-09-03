@@ -1,0 +1,51 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne&family=Unica+One&display=swap');
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	font-weight: normal;
+}
+
+body {
+	font-family: 'Syne', sans-serif;
+	min-height: 100vh;
+	font-size: 16px;
+	letter-spacing: 0.03em;
+	background: #ffffff;
+	color: #3d3c3c;
+}
+
+a {
+	color: #3d3c3c;
+	text-decoration: none;
+}
+
+input {
+	font-size: 14px;
+	font-family: 'Syne', sans-serif;
+}
+
+li {
+	list-style: none;
+}
+
+button {
+	background-color: unset;
+	border: unset;
+	cursor: pointer;
+}
+
+.container {
+	max-width: 1340px;
+	width: 100%;
+	padding: 0 20px;
+	margin: 0 auto;
+}
+
+@media (max-width: 480px) {
+	.container {
+		padding: 0 10px;
+	}
+}
