@@ -3,11 +3,10 @@ import ToolBar from '@/components/Catalog/ToolBar.vue';
 import EmptyPage from '@/components/UI/EmptyPage.vue';
 import ProductCard from '@/components/Product/ProductCard.vue';
 
-import { db } from '@/firebase';
-import { collection, getDocs } from 'firebase/firestore';
+import { useCatalogStore } from '@/store/catalog.ts';
+import { IProduct } from '@/Models/Product.ts';
 
-import { IProduct, IProductInfo } from '@/Models/Product.ts';
-
+const catalog = useCatalogStore();
 const route = useRoute();
 
 let productData = ref<IProduct[]>([]);
@@ -17,20 +16,10 @@ if (typeof route.query.search === 'string') {
 	searchValue.value = route.query.search;
 }
 
-onMounted(async () => {
-	const querySnapshot = await getDocs(collection(db, 'productsList'));
-
-	let queryData: IProduct[] = [];
-
-	querySnapshot.forEach((doc) => {
-		const data: IProductInfo = doc.data();
-		queryData.push({
-			id: doc.id,
-			...data
-		});
+onMounted(() => {
+	catalog.booksCatalog.then((res: IProduct[]) => {
+		productData.value = res;
 	});
-
-	productData.value = queryData;
 });
 </script>
 
