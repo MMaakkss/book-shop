@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import ToolBar from '@/components/Catalog/ToolBar.vue';
 import EmptyPage from '@/components/UI/EmptyPage.vue';
+import FavoriteProduct from '@/components/Product/FavoriteProduct.vue';
+
+import { storeToRefs } from 'pinia';
+import { useFavoriteStore } from '@/store/favorite.ts';
 
 const route = useRoute();
 
@@ -9,6 +13,10 @@ const searchValue = ref<string>('');
 if (typeof route.query.search === 'string') {
 	searchValue.value = route.query.search;
 }
+
+const favorite = useFavoriteStore();
+
+const { favoriteProducts } = storeToRefs(favorite);
 </script>
 
 <template>
@@ -16,7 +24,15 @@ if (typeof route.query.search === 'string') {
 		<tool-bar :search-string="searchValue" />
 
 		<div class="products-list">
-			<empty-page title="Favorite some book :)" />
+			<template v-if="favoriteProducts.length">
+				<favorite-product
+					v-for="item in favoriteProducts"
+					:id="item.id"
+					:key="item.id"
+					:image="item.image"
+				/>
+			</template>
+			<empty-page v-else title="Favorite some book :)" />
 		</div>
 	</div>
 </template>
@@ -27,47 +43,11 @@ if (typeof route.query.search === 'string') {
 	margin: 0 auto 62px;
 }
 
-.toolbar {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	gap: 24px;
-	margin-bottom: 37px;
-
-	&__search {
-		font-family: 'Unica One', cursive;
-		font-size: 24px;
-		text-transform: uppercase;
-
-		span {
-			color: $blue;
-		}
-	}
-
-	&__filters {
-		flex: 1;
-		display: flex;
-		justify-content: flex-end;
-		gap: 23px;
-		padding-right: 6px;
-
-		.category {
-			width: 100%;
-			max-width: 302px;
-		}
-
-		.sorting {
-			width: 100%;
-			max-width: 170px;
-		}
-	}
-}
-
 .products-list {
 	min-height: 50vh;
 	display: flex;
 	flex-wrap: wrap;
-	gap: 75px;
+	gap: 20px;
 	padding: 70px 0;
 	border-top: $border;
 }

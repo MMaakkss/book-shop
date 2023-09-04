@@ -1,20 +1,27 @@
 <script setup lang="ts">
-import FavouriteButton from '@/components/UI/FavouriteButton.vue';
+import FavoriteButton from '@/components/UI/FavoriteButton.vue';
 import TheButton from '@/components/UI/TheButton.vue';
 import TheCounter from '@/components/UI/TheCounter.vue';
 
 import { db } from '@/firebase';
 import { collection, where, query, documentId, onSnapshot } from 'firebase/firestore';
-
+import { useFavoriteStore } from '@/store/favorite.ts';
 import { IProduct } from '@/Models/Product.ts';
+import { isAdded } from '@/Composables/isFavorited.ts';
 
 const route = useRoute();
 const router = useRouter();
 
-const bookData = ref<IProduct>({});
+const favorite = useFavoriteStore();
 
 const booksCollectionsRef = collection(db, 'productsList');
 const booksCollectionsQuery = query(booksCollectionsRef, where(documentId(), '==', route.params.id));
+
+const bookData = ref<IProduct>({});
+
+const addToFavorite = (): void => {
+	favorite.addToFavorite(bookData.value);
+};
 
 onMounted(() => {
 	onSnapshot(booksCollectionsQuery, (querySnapshot) => {
@@ -46,7 +53,7 @@ onMounted(() => {
 			<div class="product__description">
 				<h1 class="title">
 					{{ bookData.title }}
-					<favourite-button />
+					<favorite-button :is-active="isAdded(bookData.id)" @click="addToFavorite" />
 				</h1>
 
 				<ul class="details">

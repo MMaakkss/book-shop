@@ -1,10 +1,16 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { storeToRefs } from 'pinia';
+import { useFavoriteStore } from '@/store/favorite.ts';
+
+const favorite = useFavoriteStore();
+const { favoriteAmount } = storeToRefs(favorite);
+</script>
 
 <template>
 	<nav class="header-nav">
 		<ul class="header-nav__list">
 			<li>
-				<router-link :to="{ name: 'favourite' }">
+				<router-link :to="{ name: 'favorite' }">
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
 						width="18"
@@ -20,6 +26,9 @@
 							stroke-linejoin="round"
 						/>
 					</svg>
+					<span v-show="favoriteAmount" class="products-amount">
+						{{ favoriteAmount }}
+					</span>
 				</router-link>
 			</li>
 			<li>
@@ -64,6 +73,20 @@
 
 		li {
 			cursor: pointer;
+			position: relative;
+
+			.products-amount {
+				width: 12px;
+				height: 12px;
+				border-radius: 100%;
+				background-color: $blue;
+				font-size: 8px;
+				color: #ffffff;
+				text-align: center;
+				position: absolute;
+				top: -4px;
+				right: -4px;
+			}
 
 			&:hover {
 				path {

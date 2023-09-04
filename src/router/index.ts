@@ -15,8 +15,8 @@ export default createRouter({
 			component: () => import('@/views/CatalogPage.vue')
 		},
 		{
-			path: '/favourite',
-			name: 'favourite',
+			path: '/favorite',
+			name: 'favorite',
 			component: () => import('@/views/Favorites.vue')
 		},
 		{

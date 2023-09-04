@@ -1,7 +1,15 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+interface IProps {
+	isActive?: boolean;
+}
+
+const props = withDefaults(defineProps<IProps>(), {
+	isActive: false
+});
+</script>
 
 <template>
-	<button class="button">
+	<button class="button" :class="{ active: isActive }">
 		<svg
 			xmlns="http://www.w3.org/2000/svg"
 			width="15"
@@ -28,6 +36,14 @@
 	border-radius: 20px;
 	border: 2px solid $dark;
 	transition: 0.2s ease-in-out;
+
+	&.active {
+		background-color: $blue;
+
+		path {
+			stroke: #ffffff;
+		}
+	}
 
 	path {
 		transition: 0.2s ease-in-out;

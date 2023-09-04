@@ -1,7 +1,12 @@
 <script setup lang="ts">
 import TheButton from '@/components/UI/TheButton.vue';
-import FavouriteButton from '@/components/UI/FavouriteButton.vue';
+import FavoriteButton from '@/components/UI/FavoriteButton.vue';
+
 import { IProduct } from '@/Models/Product.ts';
+import { useFavoriteStore } from '@/store/favorite.ts';
+import { isAdded } from '@/Composables/isFavorited.ts';
+
+const favorite = useFavoriteStore();
 
 const props = defineProps<{
 	data: IProduct;
@@ -9,7 +14,9 @@ const props = defineProps<{
 
 const addToTheCart = (): void => {};
 
-const addToTheFavourite = (): void => {};
+const addToFavorite = (): void => {
+	favorite.addToFavorite(props.data);
+};
 </script>
 
 <template>
@@ -24,7 +31,7 @@ const addToTheFavourite = (): void => {};
 			<div class="label">
 				$ {{ data.price.toFixed(2) }}
 			</div>
-			<favourite-button @click="addToTheFavourite" />
+			<favorite-button :is-active="isAdded(data.id)" @click="addToFavorite" />
 		</div>
 		<the-button @handle-click="addToTheCart">
 			<template #icon>
