@@ -9,12 +9,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@formkit/vue": "^1.0.0-beta.11",
-    "@fortawesome/fontawesome-svg-core": "^6.4.2",
-    "@fortawesome/free-brands-svg-icons": "^6.4.2",
-    "@fortawesome/free-regular-svg-icons": "^6.4.2",
-    "@fortawesome/free-solid-svg-icons": "^6.4.2",
-    "@fortawesome/vue-fontawesome": "^3.0.3",
     "@types/node": "^20.5.7",
     "@vue/eslint-config-airbnb": "^7.0.0",
     "@vueuse/components": "^10.4.1",
