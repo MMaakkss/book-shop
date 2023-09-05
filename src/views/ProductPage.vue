@@ -3,87 +3,66 @@ import FavoriteButton from '@/components/UI/FavoriteButton.vue';
 import TheButton from '@/components/UI/TheButton.vue';
 import TheCounter from '@/components/UI/TheCounter.vue';
 
-import { db } from '@/firebase';
-import { collection, where, query, documentId, onSnapshot } from 'firebase/firestore';
+import { storeToRefs } from 'pinia';
+import { useProductStore } from '@/store/product.ts';
 import { useFavoriteStore } from '@/store/favorite.ts';
 import { useCartStore } from '@/store/cart.ts';
-import { IProduct } from '@/Models/Product.ts';
 import { isAdded } from '@/Composables/isFavorited.ts';
 
 const route = useRoute();
-const router = useRouter();
 
+const product = useProductStore();
 const favorite = useFavoriteStore();
 const cart = useCartStore();
 
-const booksCollectionsRef = collection(db, 'productsList');
-const booksCollectionsQuery = query(booksCollectionsRef, where(documentId(), '==', route.params.id));
+const { productData } = storeToRefs(product);
 
-const bookData = ref<IProduct>({});
+product.clearState();
+
 let productAmount = ref<boolean>(1);
 
 const addToFavorite = (): void => {
-	favorite.addToFavorite(bookData.value);
+	favorite.addToFavorite(productData.value);
 };
 
 const addToCart = (): void => {
-	cart.addToCart(bookData.value, productAmount.value)
+	cart.addToCart(productData.value, productAmount.value);
 };
 
 onMounted(() => {
-	onSnapshot(booksCollectionsQuery, (querySnapshot) => {
-		const booksArray: IProduct[] = [];
-
-		querySnapshot.forEach((doc) => {
-			const book: IProduct = {
-				id: doc.id,
-				...doc.data()
-			};
-			booksArray.push(book);
-		});
-
-		if (booksArray.length) {
-			[bookData.value] = booksArray;
-		} else {
-			router.push('/');
-		}
-	});
+	product.getProductData(route.params.id);
 });
 </script>
 
 <template>
-	<div v-if="Object.keys(bookData).length" class="container product">
+	<div v-if="productData && Object.keys(productData).length" class="container product">
 		<div class="product__info">
 			<div class="product__image">
-				<img :src="bookData.image" :alt="bookData.title">
+				<img :src="productData.image" :alt="productData.title">
 			</div>
 			<div class="product__description">
 				<h1 class="title">
-					{{ bookData.title }}
-					<favorite-button :is-active="isAdded(bookData.id)" @click="addToFavorite" />
+					{{ productData.title }}
+					<favorite-button :is-active="isAdded(productData.id)" @click="addToFavorite" />
 				</h1>
 
 				<ul class="details">
 					<li class="details__item">
-						Author (a): {{ bookData.author }}
+						Author (a): {{ productData.author }}
 					</li>
 					<li class="details__item">
-						Pages: {{ bookData.pages }}
+						Pages: {{ productData.pages }}
 					</li>
 					<li class="details__item">
-						{{ bookData.description }}
+						{{ productData.description }}
 					</li>
 				</ul>
 
 				<div class="product__price">
 					<div class="label">
-						${{ bookData.price.toFixed(2) }}
+						${{ productData.price.toFixed(2) }}
 					</div>
-					<the-counter
-						:amount="1"
-						:max-value="bookData.quantity"
-						@change-amount="productAmount = $event"
-					/>
+					<the-counter :amount="1" :max-value="productData.quantity" @change-amount="productAmount = $event" />
 				</div>
 				<the-button
 					font-size="20px"
@@ -139,6 +118,7 @@ onMounted(() => {
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
+			gap: 16px;
 			font-family: 'Unica One', cursive;
 			font-size: 36px;
 			margin-bottom: 18px;
