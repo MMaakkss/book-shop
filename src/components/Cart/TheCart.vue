@@ -86,6 +86,7 @@ watch(cartAmount, () => {
 		left: 0;
 		right: 0;
 		bottom: 0;
+		z-index: 9;
 		background: $grey;
 		opacity: 0.3;
 	}
@@ -115,6 +116,8 @@ watch(cartAmount, () => {
 
 	&__products {
 		flex: 1;
+		max-height: 100%;
+		overflow: auto;
 		display: flex;
 		flex-direction: column;
 		gap: 14px;
@@ -126,6 +129,7 @@ watch(cartAmount, () => {
 		border-radius: 20px 0px 0px 0px;
 		border-top: 2px solid $dark;
 		border-left: 2px solid $dark;
+		margin-top: 40px;
 	}
 
 	&__total-title {

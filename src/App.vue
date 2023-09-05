@@ -51,6 +51,7 @@ const { isCartOpen } = storeToRefs(cart);
 		top: 0;
 		bottom: 0;
 		right: 0;
+		z-index: 10;
 		transform: translateX(486px);
 	}
 	100% {
@@ -58,6 +59,7 @@ const { isCartOpen } = storeToRefs(cart);
 		top: 0;
 		bottom: 0;
 		right: 0;
+		z-index: 10;
 		transform: translateX(0);
 	}
 }
@@ -69,6 +71,7 @@ const { isCartOpen } = storeToRefs(cart);
 		top: 0;
 		bottom: 0;
 		right: 0;
+		z-index: 10;
 		transform: translateX(0);
 	}
 	100% {
@@ -76,6 +79,7 @@ const { isCartOpen } = storeToRefs(cart);
 		top: 0;
 		bottom: 0;
 		right: 0;
+		z-index: 10;
 		transform: translateX(486px);
 	}
 }
