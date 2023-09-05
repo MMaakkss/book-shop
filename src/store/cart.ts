@@ -4,6 +4,8 @@ import { IProduct, IProductCart } from '@/Models/Product.ts';
 
 export const useCartStore = defineStore('cart', () => {
 	const cartProducts = ref<IProductCart[]>([]);
+	const isCartOpen = ref<boolean>(false);
+
 	const cartAmount: ComputedRef<number> = computed((): number => cartProducts.value.length);
 	const cartProductsId: ComputedRef<string[]> = computed((): string[] => {
 		return cartProducts.value.reduce((acc: string[], book: IProductCart) => [...acc, book.id], []);
@@ -16,12 +18,14 @@ export const useCartStore = defineStore('cart', () => {
 	}
 
 	function addToCart(product: IProduct, amount: number): void {
+		toggleCartWindow();
+
 		if (cartProductsId.value.includes(product.id)) {
 			changeAmount(product.id, amount);
 		} else {
 			pushToCart({
 				...product,
-				amount: amount,
+				amount: amount
 			});
 		}
 	}
@@ -57,10 +61,14 @@ export const useCartStore = defineStore('cart', () => {
 		storeData(newArr);
 	};
 
+	function toggleCartWindow(): void {
+		isCartOpen.value = !isCartOpen.value;
+	}
+
 	const storeData = (array: IProductCart[]): void => {
 		cartProducts.value = array;
 		localStorage.setItem('cart', JSON.stringify(array));
 	};
 
-	return { cartProducts, cartAmount, addToCart, removeFromCart, changeAmount };
+	return { isCartOpen, cartProducts, cartAmount, addToCart, removeFromCart, changeAmount, toggleCartWindow };
 });

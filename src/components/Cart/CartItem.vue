@@ -1,20 +1,55 @@
 <script setup lang="ts">
 import TheCounter from '@/components/UI/TheCounter.vue';
+
+import { IProductCart } from '@/Models/Product.ts';
+import { useCartStore } from '@/store/cart.ts';
+
+const props = defineProps<{
+	data: IProductCart;
+}>();
+
+const cart = useCartStore();
+
+const removeItem = () => {
+	cart.removeFromCart(props.data.id);
+};
+
+const changeAmount = (value: number) => {
+	let passedValue: number = 0;
+
+	if (props.data.amount < value) {
+		passedValue = 1;
+	} else {
+		passedValue = -1;
+	}
+
+	cart.changeAmount(props.data.id, passedValue);
+};
 </script>
 
 <template>
 	<div class="item">
-		<div class="item__image" />
+		<div class="item__image">
+			<img :src="data.image" :alt="data.title">
+		</div>
 		<div class="item__info">
 			<h4 class="item__title">
-				Book name
+				{{ data.title }}
 			</h4>
-			<p>Author name</p>
-			<the-counter :amount="1" :max-value="2" />
+			<p>{{ data.author }}e</p>
+			<the-counter
+				:amount="data.amount"
+				:max-value="data.quantity"
+				@change-amount="changeAmount"
+			/>
 		</div>
 		<div class="item__price">
-			<div>$30,00</div>
-			<img src="@/assets/images/icons/TRASH.svg" alt="delete">
+			<div>$ {{ data.price }}</div>
+			<img
+				src="@/assets/images/icons/TRASH.svg"
+				alt="delete"
+				@click="removeItem"
+			>
 		</div>
 	</div>
 </template>
@@ -36,6 +71,12 @@ import TheCounter from '@/components/UI/TheCounter.vue';
 		background-image: url('@/assets/images/COVER_BOOK.png');
 		background-size: contain;
 		background-repeat: no-repeat;
+
+		img {
+			height: 100%;
+			width: 100%;
+			object-fit: fill;
+		}
 	}
 
 	&__info {

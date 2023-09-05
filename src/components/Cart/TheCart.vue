@@ -1,18 +1,49 @@
 <script setup lang="ts">
 import CartItem from '@/components/Cart/CartItem.vue';
 import TheButton from '@/components/UI/TheButton.vue';
+
+import { IProductCart } from '@/Models/Product.ts';
+
+import { storeToRefs } from 'pinia';
+import { useCartStore } from '@/store/cart.ts';
+
+const cart = useCartStore();
+
+const { cartProducts, cartAmount } = storeToRefs(cart);
+
+const closeCart = () => {
+	cart.toggleCartWindow();
+};
+
+const cartPrice = computed((): number => {
+	return cartProducts.value.reduce((acc: number, elem: IProductCart) => acc + elem.price, 0).toFixed(2);
+});
+
+const amountOfProducts = computed(() => {
+	return cartAmount.value < 10 ? '0' + cartAmount.value : cartAmount.value;
+});
+
+watch(cartAmount, () => {
+	if (cartAmount.value === 0) closeCart();
+});
 </script>
 
 <template>
 	<div class="cart">
 		<div class="cart__container">
 			<div class="cart__headline">
-				<img src="@/assets/images/icons/CARET_LEFT.svg" alt="arrow">
-				<h3>Your Cart <span>(02 items)</span></h3>
+				<img src="@/assets/images/icons/CARET_LEFT.svg" alt="arrow" @click="closeCart">
+				<h3>Your Cart <span>({{ amountOfProducts }} items)</span></h3>
 			</div>
-			<div class="cart__products">
-				<cart-item />
-				<cart-item />
+			<h3 v-if="!cartProducts.length" class="cart__empty">
+				Cart is empty
+			</h3>
+			<div v-else class="cart__products">
+				<cart-item
+					v-for="item in cartProducts"
+					:key="item.id"
+					:data="item"
+				/>
 			</div>
 			<div class="cart__total">
 				<div class="cart__total-title">
@@ -20,7 +51,7 @@ import TheButton from '@/components/UI/TheButton.vue';
 						Subtotal:
 					</div>
 					<div class="price">
-						$60,00
+						${{ cartPrice }}
 					</div>
 				</div>
 				<the-button font-size="24px" hover-color="#fdbf0f" back-color="#F9784B">
@@ -30,7 +61,7 @@ import TheButton from '@/components/UI/TheButton.vue';
 				</the-button>
 			</div>
 		</div>
-		<div class="cart__background" />
+		<div class="cart__background" @click="closeCart" />
 	</div>
 </template>
 
@@ -69,6 +100,17 @@ import TheButton from '@/components/UI/TheButton.vue';
 		span {
 			color: $blue;
 		}
+
+		img {
+			cursor: pointer;
+		}
+	}
+
+	&__empty {
+		flex: 1;
+		font-size: 24px;
+		text-align: center;
+		margin-top: 40px;
 	}
 
 	&__products {
