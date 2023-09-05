@@ -20,5 +20,5 @@ In this project, I implemented an online bookstore. The data is stored in a fire
 
 #### Note
 
-I don't provide .env file with database settings
+I don't provide `.env` file with database settings
 
