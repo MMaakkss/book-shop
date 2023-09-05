@@ -3,13 +3,14 @@ import ToolBar from '@/components/Catalog/ToolBar.vue';
 import EmptyPage from '@/components/UI/EmptyPage.vue';
 import ProductCard from '@/components/Product/ProductCard.vue';
 
+import { storeToRefs } from 'pinia';
 import { useCatalogStore } from '@/store/catalog.ts';
-import { IProduct } from '@/Models/Product.ts';
 
 const catalog = useCatalogStore();
 const route = useRoute();
 
-let productData = ref<IProduct[]>([]);
+const { booksCatalog } = storeToRefs(catalog);
+
 const searchValue = ref<string>('');
 
 if (typeof route.query.search === 'string') {
@@ -17,9 +18,8 @@ if (typeof route.query.search === 'string') {
 }
 
 onMounted(() => {
-	catalog.booksCatalog.then((res: IProduct[]) => {
-		productData.value = res;
-	});
+	if (booksCatalog.value?.length) return;
+	catalog.getCatalogData();
 });
 </script>
 
@@ -28,8 +28,8 @@ onMounted(() => {
 		<tool-bar :search-string="searchValue" />
 
 		<div class="products-list">
-			<template v-if="productData.length">
-				<product-card v-for="book in productData" :key="book.id" :data="book" />
+			<template v-if="booksCatalog?.length">
+				<product-card v-for="book in booksCatalog" :key="book.id" :data="book" />
 			</template>
 			<empty-page v-else title="Nothing was found :\" />
 		</div>
