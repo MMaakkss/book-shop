@@ -1,9 +1,13 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
-import { useFavoriteStore } from '@/store/favorite.ts';
+import { useFavoriteStore } from '@/store/favorite';
+import { useCartStore } from '@/store/cart';
 
 const favorite = useFavoriteStore();
 const { favoriteAmount } = storeToRefs(favorite);
+
+const cart = useCartStore();
+const { cartAmount } = storeToRefs(cart);
 </script>
 
 <template>
@@ -11,13 +15,7 @@ const { favoriteAmount } = storeToRefs(favorite);
 		<ul class="header-nav__list">
 			<li>
 				<router-link :to="{ name: 'favorite' }">
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						width="18"
-						height="25"
-						viewBox="0 0 18 25"
-						fill="none"
-					>
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="25" viewBox="0 0 18 25" fill="none">
 						<path
 							d="M17 24L9 19L1 24V2C1 1.73478 1.10536 1.48043 1.29289 1.29289C1.48043 1.10536 1.73478 1 2 1H16C16.2652 1 16.5196 1.10536 16.7071 1.29289C16.8946 1.48043 17 1.73478 17 2V24Z"
 							stroke="#3D3C3C"
@@ -32,13 +30,7 @@ const { favoriteAmount } = storeToRefs(favorite);
 				</router-link>
 			</li>
 			<li>
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					width="29"
-					height="26"
-					viewBox="0 0 29 26"
-					fill="none"
-				>
+				<svg xmlns="http://www.w3.org/2000/svg" width="29" height="26" viewBox="0 0 29 26" fill="none">
 					<path
 						d="M11.6875 24C11.6875 24.932 10.932 25.6875 10 25.6875C9.06802 25.6875 8.3125 24.932 8.3125 24C8.3125 23.068 9.06802 22.3125 10 22.3125C10.932 22.3125 11.6875 23.068 11.6875 24Z"
 						fill="#3D3C3C"
@@ -59,6 +51,9 @@ const { favoriteAmount } = storeToRefs(favorite);
 						stroke-linejoin="round"
 					/>
 				</svg>
+				<span v-show="cartAmount" class="products-amount cart">
+					{{ cartAmount }}
+				</span>
 			</li>
 		</ul>
 	</nav>
@@ -86,6 +81,11 @@ const { favoriteAmount } = storeToRefs(favorite);
 				position: absolute;
 				top: -4px;
 				right: -4px;
+
+				&.cart {
+					top: -2px;
+					background-color: $orange;
+				}
 			}
 
 			&:hover {

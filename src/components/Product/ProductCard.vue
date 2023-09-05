@@ -4,15 +4,19 @@ import FavoriteButton from '@/components/UI/FavoriteButton.vue';
 
 import { IProduct } from '@/Models/Product.ts';
 import { useFavoriteStore } from '@/store/favorite.ts';
+import { useCartStore } from '@/store/cart.ts';
 import { isAdded } from '@/Composables/isFavorited.ts';
 
 const favorite = useFavoriteStore();
+const cart = useCartStore();
 
 const props = defineProps<{
 	data: IProduct;
 }>();
 
-const addToTheCart = (): void => {};
+const addToCart = (): void => {
+	cart.addToCart(props.data, 1);
+};
 
 const addToFavorite = (): void => {
 	favorite.addToFavorite(props.data);
@@ -33,7 +37,7 @@ const addToFavorite = (): void => {
 			</div>
 			<favorite-button :is-active="isAdded(data.id)" @click="addToFavorite" />
 		</div>
-		<the-button @handle-click="addToTheCart">
+		<the-button @handle-click="addToCart">
 			<template #icon>
 				<img src="@/assets/images/icons/SHOPPING_CART.svg" alt="add to the cart">
 			</template>

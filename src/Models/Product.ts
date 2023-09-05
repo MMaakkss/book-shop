@@ -9,8 +9,11 @@ export interface IProductInfo {
 	quantity: number;
 }
 
-export interface IProduct extends IProductInfo{
+export interface IProduct extends IProductInfo {
 	id: string;
 }
 
-
+export interface IProductCart extends IProductInfo {
+	id: string;
+	amount: number;
+}

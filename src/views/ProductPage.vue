@@ -6,6 +6,7 @@ import TheCounter from '@/components/UI/TheCounter.vue';
 import { db } from '@/firebase';
 import { collection, where, query, documentId, onSnapshot } from 'firebase/firestore';
 import { useFavoriteStore } from '@/store/favorite.ts';
+import { useCartStore } from '@/store/cart.ts';
 import { IProduct } from '@/Models/Product.ts';
 import { isAdded } from '@/Composables/isFavorited.ts';
 
@@ -13,14 +14,20 @@ const route = useRoute();
 const router = useRouter();
 
 const favorite = useFavoriteStore();
+const cart = useCartStore();
 
 const booksCollectionsRef = collection(db, 'productsList');
 const booksCollectionsQuery = query(booksCollectionsRef, where(documentId(), '==', route.params.id));
 
 const bookData = ref<IProduct>({});
+let productAmount = ref<boolean>(1);
 
 const addToFavorite = (): void => {
 	favorite.addToFavorite(bookData.value);
+};
+
+const addToCart = (): void => {
+	cart.addToCart(bookData.value, productAmount.value)
 };
 
 onMounted(() => {
@@ -72,9 +79,18 @@ onMounted(() => {
 					<div class="label">
 						${{ bookData.price.toFixed(2) }}
 					</div>
-					<the-counter :amount="1" :max-value="bookData.quantity" />
+					<the-counter
+						:amount="1"
+						:max-value="bookData.quantity"
+						@change-amount="productAmount = $event"
+					/>
 				</div>
-				<the-button font-size="20px" back-color="#F9784B" hover-color="#fdbf0f">
+				<the-button
+					font-size="20px"
+					back-color="#F9784B"
+					hover-color="#fdbf0f"
+					@click="addToCart"
+				>
 					<template #title>
 						Buy
 					</template>
