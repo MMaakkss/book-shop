@@ -2,20 +2,24 @@
 import FavoriteButton from '@/components/UI/FavoriteButton.vue';
 import TheButton from '@/components/UI/TheButton.vue';
 import TheCounter from '@/components/UI/TheCounter.vue';
+import ProductList from '@/components/Product/ProductList.vue';
 
 import { storeToRefs } from 'pinia';
+import { useCatalogStore } from '@/store/catalog.ts';
 import { useProductStore } from '@/store/product.ts';
 import { useFavoriteStore } from '@/store/favorite.ts';
 import { useCartStore } from '@/store/cart.ts';
 import { isAdded } from '@/Composables/isFavorited.ts';
+import { IProduct } from '@/Models/Product.ts';
 
 const route = useRoute();
-
+const catalog = useCatalogStore();
 const product = useProductStore();
 const favorite = useFavoriteStore();
 const cart = useCartStore();
 
 const { productData } = storeToRefs(product);
+const { booksCatalog } = storeToRefs(catalog);
 
 product.clearState();
 
@@ -28,9 +32,16 @@ const addToFavorite = (): void => {
 const addToCart = (): void => {
 	cart.addToCart(productData.value, productAmount.value);
 };
+//
+const moreBooks = computed(() => {
+	return booksCatalog.value.filter((book: IProduct) => book.id !== route.params.id && book.genre.includes(productData.value.genre[0]))
+});
 
 onMounted(() => {
 	product.getProductData(route.params.id);
+
+	if (booksCatalog.value.length) return;
+	catalog.getCatalogData();
 });
 </script>
 
@@ -76,9 +87,9 @@ onMounted(() => {
 				</the-button>
 			</div>
 		</div>
-		<!--		<product-list title="view more">-->
-		<!--			<img src="@/assets/images/icons/PATH.svg" alt="path">-->
-		<!--		</product-list>-->
+		<product-list title="View more" :books-list="moreBooks">
+			<img src="@/assets/images/icons/PATH.svg" alt="path">
+		</product-list>
 	</div>
 </template>
 
