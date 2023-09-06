@@ -1,9 +1,17 @@
 <script setup lang="ts">
 import SearchInput from '@/components/UI/SearchInput.vue';
 import TheButton from '@/components/UI/TheButton.vue';
-// import ProductList from '@/components/Product/ProductList.vue';
+import ProductList from '@/components/Product/ProductList.vue';
+
+import { storeToRefs } from 'pinia';
+import { useCatalogStore } from '@/store/catalog.ts';
+import { IProduct } from '@/Models/Product.ts';
 
 const router = useRouter();
+
+const catalog = useCatalogStore();
+
+const { booksCatalog } = storeToRefs(catalog);
 
 const handleSearch = (searchString: string = ''): void => {
 	if (searchString.length < 3) return;
@@ -18,6 +26,21 @@ const navigateToCatalogSection = (catalogSection: string = ''): void => {
 		router.push({ name: 'catalog' });
 	}
 };
+
+const getFiction = computed(() => {
+	return booksCatalog.value.filter((book: IProduct) => book.genre.includes('fiction'));
+});
+const getNonFiction = computed(() => {
+	return booksCatalog.value.filter((book: IProduct) => book.genre.includes('nonfiction'));
+});
+const getCurricula = computed(() => {
+	return booksCatalog.value.filter((book: IProduct) => book.genre.includes('curricula'));
+});
+
+onMounted(() => {
+	if (booksCatalog.value.length) return;
+	catalog.getCatalogData();
+});
 </script>
 
 <template>
@@ -79,16 +102,21 @@ const navigateToCatalogSection = (catalogSection: string = ''): void => {
 			</div>
 		</section>
 
-		<!--		<section class="section books">-->
-		<!--			<product-list title="Romance">-->
-		<!--				<img src="@/assets/images/icons/PATH.svg" alt="path">-->
-		<!--			</product-list>-->
-		<!--		</section>-->
-		<!--		<section class="section books">-->
-		<!--			<product-list title="Adventure">-->
-		<!--				<img src="@/assets/images/icons/PATH.svg" alt="path">-->
-		<!--			</product-list>-->
-		<!--		</section>-->
+		<section class="section books">
+			<product-list title="Fiction" :books-list="getFiction">
+				<img src="@/assets/images/icons/PATH.svg" alt="path">
+			</product-list>
+		</section>
+		<section class="section books">
+			<product-list title="Non Fiction" :books-list="getNonFiction">
+				<img src="@/assets/images/icons/PATH.svg" alt="path">
+			</product-list>
+		</section>
+		<section class="section books">
+			<product-list title="Curricula" :books-list="getCurricula">
+				<img src="@/assets/images/icons/PATH.svg" alt="path">
+			</product-list>
+		</section>
 	</div>
 </template>
 

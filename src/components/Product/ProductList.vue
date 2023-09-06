@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import ProductCard from '@/components/Product/ProductCard.vue';
 
+import { IProduct } from '@/Models/Product.ts';
+
 const props = defineProps<{
 	title: string;
+	booksList: IProduct[];
 }>();
 </script>
 
@@ -13,7 +16,11 @@ const props = defineProps<{
 			{{ title }}
 		</h3>
 		<div class="products-list">
-			<product-card v-for="n in 5" :key="n" />
+			<product-card
+				v-for="item in booksList"
+				:key="item.id"
+				:data="item"
+			/>
 		</div>
 	</div>
 </template>

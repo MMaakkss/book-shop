@@ -4,7 +4,7 @@ import { collection, getDocs } from 'firebase/firestore';
 import { IProduct, IProductInfo } from '@/Models/Product.ts';
 
 export const useCatalogStore = defineStore('catalog', () => {
-	const booksCatalog = ref<IProduct[] | undefined>();
+	const booksCatalog = ref<IProduct[]>([]);
 
 	async function getCatalogData(): Promise<void> {
 		const querySnapshot = await getDocs(collection(db, 'productsList'));
