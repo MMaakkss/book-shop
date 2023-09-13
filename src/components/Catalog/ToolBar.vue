@@ -10,6 +10,10 @@ const props = withDefaults(defineProps<IProps>(), {
 	searchString: ''
 });
 
+const emit = defineEmits<{
+	updateSearchValue: [value: string];
+}>();
+
 const route = useRoute();
 const router = useRouter();
 
@@ -30,6 +34,8 @@ watch(
 	route,
 	() => {
 		const routeQuery = route.query.search;
+
+		emit('updateSearchValue', routeQuery);
 
 		if (typeof routeQuery === 'string') {
 			searchValue.value = routeQuery;

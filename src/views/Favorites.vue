@@ -5,6 +5,7 @@ import FavoriteProduct from '@/components/Product/FavoriteProduct.vue';
 
 import { storeToRefs } from 'pinia';
 import { useFavoriteStore } from '@/store/favorite.ts';
+import { IProduct } from '@/Models/Product.ts';
 
 const route = useRoute();
 
@@ -17,16 +18,28 @@ if (typeof route.query.search === 'string') {
 const favorite = useFavoriteStore();
 
 const { favoriteProducts } = storeToRefs(favorite);
+
+const updateSearchString = (newValue: string) => {
+	searchValue.value = newValue;
+};
+
+const bookList = computed(() => {
+	if (searchValue.value) {
+		return favoriteProducts.value.filter((book: IProduct) => book.title.toLowerCase().includes(searchValue.value.toLowerCase()));
+	} else {
+		return favoriteProducts.value;
+	}
+});
 </script>
 
 <template>
 	<div class="container">
-		<tool-bar :search-string="searchValue" />
+		<tool-bar :search-string="searchValue" @update-search-value="updateSearchString" />
 
 		<div class="products-list">
-			<template v-if="favoriteProducts.length">
+			<template v-if="bookList.length">
 				<favorite-product
-					v-for="item in favoriteProducts"
+					v-for="item in bookList"
 					:id="item.id"
 					:key="item.id"
 					:image="item.image"
