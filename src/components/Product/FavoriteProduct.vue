@@ -93,6 +93,11 @@ const deleteItem = () => {
 			border-radius: 10px;
 			box-shadow: 10px 12px 10px -6px rgba(61, 60, 60, 0.36);
 		}
+
+		@media (max-width: 460px) {
+			width: 244px;
+			height: 355px;
+		}
 	}
 
 	&__delete {

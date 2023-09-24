@@ -22,5 +22,20 @@ const props = defineProps<{
 	padding-top: 92px;
 	font-size: 36px;
 	color: $orange;
+
+	@media (max-width: 680px) {
+		flex-direction: column;
+		gap: 28px;
+		padding-top: 40px;
+	}
+
+	@media (max-width: 460px) {
+		padding-top: 20px;
+		font-size: 24px;
+
+		img {
+			width: 124px;
+		}
+	}
 }
 </style>

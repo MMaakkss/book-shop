@@ -32,6 +32,12 @@
 		gap: 24px;
 		padding: 44px 0 114px;
 		border-top: $border;
+		
+		@media (max-width: 630px) {
+			flex-direction: column;
+			gap: 32px;
+			padding: 30px 0;
+		}
 	}
 
 	&__links {

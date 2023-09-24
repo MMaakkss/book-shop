@@ -7,7 +7,9 @@ import HeaderNav from '@/components/Header/HeaderNav.vue';
 		<div class="container">
 			<router-link class="header__logo" :to="{ name: 'home' }">
 				<img src="@/assets/images/icons/BOOK_OPEN.svg" alt="logo">
-				BookStore
+				<span>
+					BookStore
+				</span>
 			</router-link>
 			<header-nav />
 		</div>
@@ -31,6 +33,12 @@ import HeaderNav from '@/components/Header/HeaderNav.vue';
 		align-items: center;
 		gap: 12px;
 		font-size: 20px;
+
+		@media (max-width: 320px) {
+			span {
+				display: none;
+			}
+		}
 	}
 }
 </style>

@@ -130,6 +130,10 @@ onMounted(() => {
 		font-family: 'Unica One', cursive;
 		font-size: 36px;
 		margin-bottom: 75px;
+
+		@media (max-width: 850px) {
+			margin-bottom: 32px;
+		}
 	}
 
 	&.books {
@@ -137,11 +141,15 @@ onMounted(() => {
 
 		&:last-child {
 			margin-bottom: 220px;
-		}
 
-		.section__title {
-			margin-bottom: 52px;
+			@media (max-width: 850px) {
+				margin-bottom: 120px;
+			}
 		}
+	}
+
+	@media (max-width: 850px) {
+		margin-bottom: 120px;
 	}
 }
 
@@ -154,6 +162,14 @@ onMounted(() => {
 
 	&__info {
 		max-width: 480px;
+
+		@media (max-width: 960px) {
+			max-width: unset;
+		}
+
+		@media (max-width: 850px) {
+			width: 100%;
+		}
 	}
 
 	&__title {
@@ -165,12 +181,56 @@ onMounted(() => {
 			width: 141px;
 			position: absolute;
 			top: 65px;
+
+			@media (max-width: 960px) {
+				width: 90px;
+				top: 60px;
+				right: 20px;
+			}
+
+			@media (max-width: 850px) {
+				width: 120px;
+				top: 0;
+			}
+
+			@media (max-width: 760px) {
+				width: 80px;
+				top: 50px;
+			}
+
+			@media (max-width: 635px) {
+				width: 90px;
+				top: 15px;
+			}
+
+			@media (max-width: 590px) {
+				width: 70px;
+				top: 32px;
+				right: 10px;
+			}
+		}
+
+		@media (max-width: 850px) {
+			font-size: 48px;
+		}
+
+		@media (max-width: 635px) {
+			font-size: 36px;
+		}
+
+		@media (max-width: 590px) {
+			max-width: 271px;
 		}
 	}
 
 	&__description {
 		color: $grey;
 		margin-bottom: 34px;
+
+		@media (max-width: 350px) {
+			font-size: 14px;
+			margin-bottom: 24px;
+		}
 	}
 
 	&__explore {
@@ -183,6 +243,18 @@ onMounted(() => {
 			flex: 1;
 			border: $border;
 		}
+		
+		@media (max-width: 450px) {
+			flex-direction: column;
+
+			.button {
+				width: 100%;
+			}
+
+			.dash-line {
+				width: 100%;
+			}
+		}
 	}
 
 	&__image {
@@ -192,6 +264,10 @@ onMounted(() => {
 		img {
 			position: relative;
 			border-radius: 0 20px;
+
+			@media (max-width: 1160px) {
+				max-width: 320px;
+			}
 		}
 
 		&:before {
@@ -204,6 +280,14 @@ onMounted(() => {
 			background-color: $blue;
 			border-radius: 0 20px;
 		}
+
+		@media (max-width: 960px) {
+			display: none;
+		}
+	}
+
+	@media (max-width: 960px) {
+		justify-content: center;
 	}
 }
 
@@ -216,6 +300,19 @@ onMounted(() => {
 
 	.button {
 		flex: 1 0 30%;
+
+		@media (max-width: 590px) {
+			flex: unset;
+		}
+	}
+
+	@media (max-width: 760px) {
+		column-gap: 40px;
+		row-gap: 38px;
+
+		.button {
+			padding: 18px 10px;
+		}
 	}
 }
 </style>

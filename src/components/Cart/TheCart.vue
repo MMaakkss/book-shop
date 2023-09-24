@@ -78,6 +78,11 @@ watch(cartAmount, () => {
 		width: 486px;
 		padding-top: 50px;
 		background-color: #ffffff;
+
+		@media (max-width: 610px) {
+			//left: 0;
+			width: 100%;
+		}
 	}
 
 	&__background {
@@ -105,6 +110,10 @@ watch(cartAmount, () => {
 		img {
 			cursor: pointer;
 		}
+
+		@media (max-width: 570px) {
+			margin-bottom: 26px;
+		}
 	}
 
 	&__empty {
@@ -122,11 +131,15 @@ watch(cartAmount, () => {
 		flex-direction: column;
 		gap: 14px;
 		padding: 0 35px 33px;
+
+		@media (max-width: 570px) {
+			padding: 0 16px 32px;
+		}
 	}
 
 	&__total {
 		padding: 30px;
-		border-radius: 20px 0px 0px 0px;
+		border-radius: 20px 0 0 0;
 		border-top: 2px solid $dark;
 		border-left: 2px solid $dark;
 		margin-top: 40px;

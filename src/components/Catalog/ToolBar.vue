@@ -70,6 +70,10 @@ watch(
 .search-input {
 	max-width: 530px;
 	margin: 0 auto 62px;
+
+	@media (max-width: 830px) {
+		margin: 0 auto 30px;
+	}
 }
 
 .toolbar {
@@ -99,12 +103,35 @@ watch(
 		.category {
 			width: 100%;
 			max-width: 302px;
+			min-width: 302px;
+
+			@media (max-width: 415px) {
+				max-width: unset;
+				min-width: 100%;
+			}
 		}
 
 		.sorting {
 			width: 100%;
 			max-width: 170px;
+			min-width: 170px;
 		}
+
+		@media (max-width: 830px) {
+			align-self: flex-end;
+		}
+
+		@media (max-width: 600px) {
+			width: 100%;
+			flex-direction: column;
+			align-items: flex-end;
+		}
+	}
+	
+	@media (max-width: 830px) {
+		flex-direction: column;
+		gap: 20px;
+		margin-bottom: 34px;
 	}
 }
 </style>

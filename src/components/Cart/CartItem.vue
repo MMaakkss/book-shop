@@ -77,16 +77,46 @@ const changeAmount = (value: number) => {
 			width: 100%;
 			object-fit: fill;
 		}
+
+		@media (max-width: 350px) {
+			width: 70px;
+			height: 103px;
+		}
 	}
 
 	&__info {
 		flex: 1;
 		display: flex;
 		flex-direction: column;
+		position: relative;
 
 		.counter {
 			justify-content: flex-start;
 			margin-top: auto;
+
+			@media (max-width: 570px) {
+				position: absolute;
+				bottom: 0;
+				left: 0;
+			}
+		}
+
+		@media (max-width: 570px) {
+			max-width: 120px;
+
+			h4, p {
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+			}
+
+			h4 {
+				margin-bottom: 10px;
+			}
+		}
+
+		@media (max-width: 390px) {
+			max-width: 80px;
 		}
 	}
 
@@ -110,6 +140,15 @@ const changeAmount = (value: number) => {
 			height: 32px;
 			cursor: pointer;
 		}
+
+		@media (max-width: 570px) {
+			flex: 1;
+		}
+	}
+
+	@media (max-width: 570px) {
+		padding: 20px 18px;
+		gap: 11px;
 	}
 }
 </style>

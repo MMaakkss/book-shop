@@ -62,7 +62,9 @@ const openCart = () => {
 							stroke-linejoin="round"
 						/>
 					</svg>
-					Catalog
+					<span>
+						Catalog
+					</span>
 				</router-link>
 			</li>
 			<li>
@@ -174,6 +176,12 @@ const openCart = () => {
 
 					path {
 						stroke: $blue;
+					}
+				}
+				
+				@media (max-width: 470px) {
+					span {
+						display: none;
 					}
 				}
 			}

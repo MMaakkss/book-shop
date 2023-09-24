@@ -50,47 +50,6 @@ onMounted(() => {
 </template>
 
 <style scoped lang="scss">
-.search-input {
-	max-width: 530px;
-	margin: 0 auto 62px;
-}
-
-.toolbar {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	gap: 24px;
-	margin-bottom: 37px;
-
-	&__search {
-		font-family: 'Unica One', cursive;
-		font-size: 24px;
-		text-transform: uppercase;
-
-		span {
-			color: $blue;
-		}
-	}
-
-	&__filters {
-		flex: 1;
-		display: flex;
-		justify-content: flex-end;
-		gap: 23px;
-		padding-right: 6px;
-
-		.category {
-			width: 100%;
-			max-width: 302px;
-		}
-
-		.sorting {
-			width: 100%;
-			max-width: 170px;
-		}
-	}
-}
-
 .products-list {
 	min-height: 50vh;
 	display: flex;
@@ -98,5 +57,28 @@ onMounted(() => {
 	gap: 75px;
 	padding: 70px 0;
 	border-top: $border;
+
+	@media (max-width: 1339.99px) {
+		gap: 40px;
+		justify-content: center;
+	}
+	
+	@media (max-width: 810px) {
+		padding: 44px 0;
+	}
+
+	@media (max-width: 460px) {
+		.product {
+			width: 100%;
+
+			:deep(.product__image) {
+				background-image: none;
+
+				img {
+					object-fit: contain;
+				}
+			}
+		}
+	}
 }
 </style>

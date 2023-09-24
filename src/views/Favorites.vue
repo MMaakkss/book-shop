@@ -51,11 +51,6 @@ const bookList = computed(() => {
 </template>
 
 <style scoped lang="scss">
-.search-input {
-	max-width: 530px;
-	margin: 0 auto 62px;
-}
-
 .products-list {
 	min-height: 50vh;
 	display: flex;
@@ -63,5 +58,14 @@ const bookList = computed(() => {
 	gap: 20px;
 	padding: 70px 0;
 	border-top: $border;
+
+	@media (max-width: 1339.99px) {
+		gap: 40px;
+		justify-content: center;
+	}
+
+	@media (max-width: 810px) {
+		padding: 44px 0;
+	}
 }
 </style>
