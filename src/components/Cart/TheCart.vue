@@ -16,7 +16,9 @@ const closeCart = () => {
 };
 
 const cartPrice = computed((): number => {
-	return cartProducts.value.reduce((acc: number, elem: IProductCart) => acc + elem.price, 0).toFixed(2);
+	return cartProducts.value
+		.reduce((acc: number, elem: IProductCart) => acc + (elem.price * elem.amount), 0)
+		.toFixed(2);
 });
 
 const amountOfProducts = computed(() => {
@@ -80,7 +82,6 @@ watch(cartAmount, () => {
 		background-color: #ffffff;
 
 		@media (max-width: 610px) {
-			//left: 0;
 			width: 100%;
 		}
 	}
