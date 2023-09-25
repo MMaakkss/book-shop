@@ -102,6 +102,27 @@ onMounted(() => {
 		gap: 24px;
 		padding: 0 120px;
 		margin-bottom: 162px;
+
+		@media (max-width: 900px) {
+			flex-direction: column;
+			gap: 54px;
+		}
+
+		@media (max-width: 815px) {
+			padding: 0 80px;
+		}
+
+		@media (max-width: 730px) {
+			padding: 0;
+		}
+
+		@media (max-width: 590px) {
+			margin-bottom: 98px;
+		}
+
+		@media (max-width: 440px) {
+			gap: 36px;
+		}
 	}
 
 	&__image {
@@ -116,6 +137,15 @@ onMounted(() => {
 			max-width: 100%;
 			max-height: 450px;
 			box-shadow: 10px 12px 10px -6px rgba(61, 60, 60, 0.36);
+		}
+
+		@media (max-width: 1135px) {
+			flex: 0.5;
+		}
+
+		@media (max-width: 900px) {
+			padding-top: 0;
+			position: static;
 		}
 	}
 
@@ -136,6 +166,16 @@ onMounted(() => {
 
 			.button {
 				height: 46px;
+			}
+
+			@media (max-width: 900px) {
+				flex-direction: column;
+				font-size: 24px;
+				margin-bottom: 33px;
+
+				.button {
+					margin: auto;
+				}
 			}
 		}
 
@@ -165,6 +205,22 @@ onMounted(() => {
 
 				&:last-child {
 					margin-bottom: 45px;
+
+					@media (max-width: 900px) {
+						margin-bottom: 60px;
+					}
+
+					@media (max-width: 590px) {
+						font-size: 14px;
+					}
+				}
+
+				@media (max-width: 900px) {
+					margin-bottom: 32px;
+				}
+				
+				@media (max-width: 420px) {
+					padding: 20px 18px;
 				}
 			}
 		}
@@ -172,6 +228,10 @@ onMounted(() => {
 		.button {
 			max-width: 260px;
 			margin-left: auto;
+
+			@media (max-width: 590px) {
+				max-width: unset;
+			}
 		}
 	}
 
@@ -184,7 +244,15 @@ onMounted(() => {
 		.label {
 			font-size: 36px;
 			color: $orange;
+
+			@media (max-width: 440px) {
+				font-size: 30px;
+			}
 		}
+	}
+
+	@media (max-width: 620px) {
+		margin-bottom: 150px;
 	}
 }
 </style>

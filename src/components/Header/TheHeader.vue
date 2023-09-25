@@ -40,5 +40,9 @@ import HeaderNav from '@/components/Header/HeaderNav.vue';
 			}
 		}
 	}
+
+	@media (max-width: 810px) {
+		height: 80px;
+	}
 }
 </style>

@@ -38,6 +38,11 @@ const props = defineProps<{
 	@media (max-width: 850px) {
 		margin-bottom: 24px;
 	}
+
+	@media (max-width: 540px) {
+		font-size: 28px;
+		margin-bottom: 16px;
+	}
 }
 
 .products-list-wrap {
@@ -74,6 +79,12 @@ const props = defineProps<{
 		@media (max-width: 860px) {
 			gap: 40px;
 		}
+	}
+
+	@media (max-width: 480px) {
+		width: calc(100% + 20px);
+		padding: 0 10px;
+		margin-left: -10px;
 	}
 }
 </style>
