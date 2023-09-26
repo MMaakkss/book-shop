@@ -1,11 +1,26 @@
 <script setup lang="ts">
 import { onClickOutside } from '@vueuse/core';
 
+interface IProps {
+	title: string;
+	value?: string;
+	itemsList: string[];
+}
+
+const props = withDefaults(defineProps<IProps>(), {
+	value: ''
+});
+
+const emit = defineEmits<{
+	handleFilter: [value: string];
+}>();
+
 const contentWrapRef = ref<HTMLDivElement>(null);
 const contentInnerRef = ref<HTMLUListElement>(null);
 const placeholderRef = ref<HTMLUListElement>(null);
 
 let isToggled = ref<boolean>(false);
+let selectedValue = ref<string>(props.value);
 
 const toggleDropDown = (): void => {
 	if (!isToggled.value) {
@@ -25,6 +40,21 @@ const closeDropDown = (): void => {
 	isToggled.value = false;
 };
 
+const selectValue = (value: string): void => {
+	if (value !== selectedValue.value) {
+		selectedValue.value = value;
+	} else {
+		selectedValue.value = "";
+	}
+
+	emitSelectedValue();
+};
+
+const emitSelectedValue = (): void => {
+	emit("handleFilter", selectedValue.value);
+	closeDropDown();
+}
+
 onClickOutside(contentInnerRef, () => closeDropDown(), { ignore: [placeholderRef] });
 </script>
 
@@ -32,7 +62,7 @@ onClickOutside(contentInnerRef, () => closeDropDown(), { ignore: [placeholderRef
 	<div class="drop-down">
 		<div ref="placeholderRef" class="drop-down__placeholder" @click="toggleDropDown">
 			<div class="label" :class="{ active: isToggled }">
-				Categories
+				{{ title }}
 				<div class="icon">
 					<img src="@/assets/images/icons/CARET_DOWN.svg" alt="arrow">
 				</div>
@@ -41,11 +71,14 @@ onClickOutside(contentInnerRef, () => closeDropDown(), { ignore: [placeholderRef
 		</div>
 		<div ref="contentWrapRef" class="drop-down__content-wrap">
 			<ul ref="contentInnerRef" class="drop-down__content">
-				<li class="item selected">
-					Contwent
-				</li>
-				<li class="item">
-					Contwent
+				<li
+					v-for="item in itemsList"
+					:key="item"
+					class="item"
+					:class="{ selected: selectedValue === item }"
+					@click="selectValue(item)"
+				>
+					{{ item }}
 				</li>
 			</ul>
 		</div>
@@ -122,6 +155,7 @@ onClickOutside(contentInnerRef, () => closeDropDown(), { ignore: [placeholderRef
 			display: flex;
 			align-items: center;
 			cursor: pointer;
+			text-transform: capitalize;
 
 			&.selected {
 				border-top: 2px solid $dark;
