@@ -13,6 +13,21 @@ const catalog = useCatalogStore();
 
 const { booksCatalog } = storeToRefs(catalog);
 
+const categoriesLink = [
+	{
+		title: 'Fiction',
+		query: 'fiction'
+	},
+	{
+		title: 'Non-fiction',
+		query: 'nonfiction'
+	},
+	{
+		title: 'Curricula',
+		query: 'curricula'
+	}
+];
+
 const handleSearch = (searchString: string = ''): void => {
 	if (searchString.length < 3) return;
 
@@ -21,7 +36,7 @@ const handleSearch = (searchString: string = ''): void => {
 
 const navigateToCatalogSection = (catalogSection: string = ''): void => {
 	if (catalogSection) {
-		router.push({ name: 'catalog', query: { section: catalogSection } });
+		router.push({ name: 'catalog', query: { categories: catalogSection } });
 	} else {
 		router.push({ name: 'catalog' });
 	}
@@ -85,18 +100,18 @@ onMounted(() => {
 			</h3>
 			<div class="categories-list">
 				<the-button
-					v-for="n in 6"
-					:key="n"
+					v-for="link in categoriesLink"
+					:key="link.query"
 					hover-color="#fdbf0f"
 					back-color="#ffffff"
 					decor-display="block"
 					radius="10px"
 					padding="26px 10px"
 					font-size="24px"
-					@handle-click="navigateToCatalogSection"
+					@handle-click="navigateToCatalogSection(link.query)"
 				>
 					<template #title>
-						Adventure
+						{{ link.title }}
 					</template>
 				</the-button>
 			</div>
@@ -243,7 +258,7 @@ onMounted(() => {
 			flex: 1;
 			border: $border;
 		}
-		
+
 		@media (max-width: 450px) {
 			flex-direction: column;
 

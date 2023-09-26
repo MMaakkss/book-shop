@@ -72,7 +72,7 @@ watch(route, () => {
 				<drop-down
 					title="Categories"
 					:value="route.query.categories"
-					:items-list="['fiction', 'nonfiction', 'curricula']"
+					:items-list="['fiction', 'non-fiction', 'curricula']"
 					@handle-filter="handleFilter($event, 'categories')"
 				/>
 			</div>
