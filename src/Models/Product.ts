@@ -9,6 +9,11 @@ export interface IProductInfo {
 	quantity: number;
 }
 
+export interface IFilter {
+	search: string;
+	filter: string;
+}
+
 export interface IProduct extends IProductInfo {
 	id: string;
 }

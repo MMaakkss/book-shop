@@ -2,6 +2,8 @@
 import DropDown from '@/components/UI/DropDown.vue';
 import SearchInput from '@/components/UI/SearchInput.vue';
 
+import { IFilter } from '@/Models/Product.ts';
+
 interface IProps {
 	searchString?: string;
 }
@@ -11,8 +13,7 @@ const props = withDefaults(defineProps<IProps>(), {
 });
 
 const emit = defineEmits<{
-	updateSearchValue: [value: string];
-	updateFilterValue: [value: string];
+	updateSearchValue: [value: IFilter];
 }>();
 
 const route = useRoute();
@@ -23,35 +24,37 @@ let searchValue = ref<string>(props.searchString);
 const handleSearch = (value: string): void => {
 	const searchValue: string = value.replace(/ +/g, ' ').trim();
 
-	if (searchValue.length < 3) {
-		router.push({});
-		return;
-	}
-
-	router.push({ query: { search: searchValue } });
+	changeRoute({ ...route.query, search: searchValue });
 };
 
 const handleFilter = (value: string, sortGroup: string): void => {
 	if (sortGroup === 'sort-by') {
-		console.log(value);
 		return;
 	}
 
+	changeRoute({
+		...route.query,
+		[sortGroup]: value
+	});
+};
+
+const changeRoute = (query: Object) => {
 	router.push({
-		query: {
-			...route.query,
-			[sortGroup]: value
-		}
+		query: query
 	});
 };
 
 watch(route, () => {
-	const routeQuery = route.query.search;
+	const routeQuerySearch = route.query.search || '';
+	const routeQueryFilter = route.query.categories || '';
 
-	emit('updateSearchValue', routeQuery);
+	emit('updateSearchValue', {
+		search: routeQuerySearch,
+		filter: routeQueryFilter
+	});
 
-	if (typeof routeQuery === 'string') {
-		searchValue.value = routeQuery;
+	if (typeof routeQuerySearch === 'string') {
+		searchValue.value = routeQuerySearch;
 	} else {
 		searchValue.value = '';
 	}
@@ -64,24 +67,19 @@ watch(route, () => {
 	</div>
 	<div class="toolbar">
 		<div v-show="searchValue" class="toolbar__search">
-			Results
-			“<span>{{ searchValue }}</span>”
+			Results “<span>{{ searchValue }}</span>”
 		</div>
 		<div class="toolbar__filters">
 			<div class="category">
 				<drop-down
 					title="Categories"
 					:value="route.query.categories"
-					:items-list="['fiction', 'non-fiction', 'curricula']"
+					:items-list="['fiction', 'nonfiction', 'curricula']"
 					@handle-filter="handleFilter($event, 'categories')"
 				/>
 			</div>
 			<div class="sorting">
-				<drop-down
-					title="Sort By"
-					:items-list="['pages', 'price']"
-					@handle-filter="handleFilter($event, 'sort-by')"
-				/>
+				<drop-down title="Sort By" :items-list="['pages', 'price']" @handle-filter="handleFilter($event, 'sort-by')" />
 			</div>
 		</div>
 	</div>

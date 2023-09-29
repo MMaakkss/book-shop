@@ -2,7 +2,7 @@
 import ToolBar from '@/components/Catalog/ToolBar.vue';
 import EmptyPage from '@/components/UI/EmptyPage.vue';
 import ProductCard from '@/components/Product/ProductCard.vue';
-import { IProduct } from '@/Models/Product.ts';
+import { IProduct, IFilter } from '@/Models/Product.ts';
 
 import { storeToRefs } from 'pinia';
 import { useCatalogStore } from '@/store/catalog.ts';
@@ -13,21 +13,33 @@ const route = useRoute();
 const { booksCatalog } = storeToRefs(catalog);
 
 let searchValue = ref<string>('');
+let filterValue = ref<string>('');
 
 if (typeof route.query.search === 'string') {
 	searchValue.value = route.query.search;
 }
 
-const updateSearchString = (newValue: string) => {
-	searchValue.value = newValue;
+if (typeof route.query.categories === 'string') {
+	filterValue.value = route.query.categories;
+}
+
+const updateSearchString = (newValue: IFilter) => {
+	searchValue.value = newValue.search;
+	filterValue.value = newValue.filter;
 };
 
 const bookList = computed(() => {
+	let list: IProduct[] = booksCatalog.value;
+
 	if (searchValue.value) {
-		return booksCatalog.value.filter((book: IProduct) => book.title.toLowerCase().includes(searchValue.value.toLowerCase()));
-	} else {
-		return booksCatalog.value;
+		list = booksCatalog.value.filter((book: IProduct) => book.title.toLowerCase().includes(searchValue.value.toLowerCase()));
 	}
+
+	if (filterValue.value) {
+		list = list.filter((book: IProduct) => book.genre.includes(filterValue.value));
+	}
+
+	return list;
 });
 
 onMounted(() => {
