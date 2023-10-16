@@ -1,18 +1,24 @@
 import { defineStore } from 'pinia';
 import { db } from '@/firebase';
-import { collection, getDocs } from 'firebase/firestore';
-import { IProduct, IProductInfo } from '@/Models/Product.ts';
+import { collection, getDocs, FirestoreDataConverter, PartialWithFieldValue, QueryDocumentSnapshot, DocumentData } from 'firebase/firestore';
+import { IProduct } from '@/Models/Product.ts';
 
 export const useCatalogStore = defineStore('catalog', () => {
 	const booksCatalog = ref<IProduct[]>([]);
 
+	const converter = <T>(): FirestoreDataConverter<T> => ({
+		toFirestore: (data: PartialWithFieldValue<T>) => data as DocumentData,
+		fromFirestore: (snap: QueryDocumentSnapshot<DocumentData>) =>
+			snap.data() as T,
+	});
+
 	async function getCatalogData(): Promise<void> {
-		const querySnapshot = await getDocs(collection(db, 'productsList'));
+		const querySnapshot = await getDocs(collection(db, 'productsList').withConverter( converter<T>()));
 
 		let queryData: IProduct[] = [];
 
-		querySnapshot.forEach((doc) => {
-			const data: IProductInfo = doc.data();
+		querySnapshot.forEach((doc): void => {
+			const data = doc.data();
 
 			queryData.push({
 				id: doc.id,
